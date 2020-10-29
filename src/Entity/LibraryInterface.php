@@ -66,13 +66,13 @@ interface LibraryInterface extends ApiCacheable
     public function setInteriorDesigner(?string $designer) : void;
 
     public function getAddress() : ?Address;
-    public function setAddress(Address $address) : void;
+    public function setAddress(?Address $address) : void;
 
     public function getMailAddress() : ?Address;
     public function setMailAddress(?Address $address) : void;
 
-    public function getCity() : City;
-    public function setCity(City $city) : void;
+    public function getCity() : ?City;
+    public function setCity(?City $city) : void;
 
     public function getConsortium() : ?Consortium;
     public function setConsortium(?Consortium $consortium) : void;

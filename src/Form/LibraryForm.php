@@ -64,6 +64,7 @@ class LibraryForm extends EntityFormType
                 'label' => 'Official identifier',
             ])
             ->add('address', AddressType::class, [
+                'required' => false,
                 'current_langcode' => $options['current_langcode'],
             ])
             ->add('mail_address', MailAddressType::class, [

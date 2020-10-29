@@ -301,10 +301,12 @@ trait LibraryTrait
         return $this->address;
     }
 
-    public function setAddress(Address $address) : void
+    public function setAddress(?Address $address) : void
     {
         $this->address = $address;
-        $this->setCity($address->getCity());
+        if($this->address) {
+            $this->setCity($address->getCity());
+        }
     }
 
     public function getMailAddress() : ?Address
@@ -317,7 +319,7 @@ trait LibraryTrait
         $this->mail_address = $address;
     }
 
-    public function getCity() : City
+    public function getCity() : ?City
     {
         if (!$this->city && $this->address) {
             $this->city = $this->address->getCity();
@@ -326,11 +328,11 @@ trait LibraryTrait
         return $this->city;
     }
 
-    public function setCity(City $city) : void
+    public function setCity(?City $city) : void
     {
         $this->city = $city;
 
-        if ($address = $this->getAddress()) {
+        if ($this->city && $address = $this->getAddress()) {
             $address->setCity($city);
         }
     }
