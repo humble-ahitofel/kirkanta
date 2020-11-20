@@ -156,6 +156,7 @@ class OrganisationController extends Controller
                         }) }}">{{ row.standardName }}</a>
                     ';
                 });
+                $builder->orderBy('standardName');
                 break;
 
             default:

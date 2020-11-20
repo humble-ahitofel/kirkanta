@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Doctrine\EntityRepository;
 use App\Entity\Service;
 use App\Entity\ServiceInstance;
+use App\Util\ServiceTypes;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -28,12 +30,23 @@ class ServiceInstanceForm extends EntityFormType
     {
         parent::form($builder, $options);
 
+        $types = new ServiceTypes();
+
         $builder
             ->add('template', EntityType::class, [
                 'class' => Service::class,
                 'placeholder' => '-- Select --',
-                'choice_label' => 'name',
+                'choice_label' => function ($service) use ($types) {
+                    return $types->search($service->getType()) . ' -- '. $service->getName();
+                },
                 'group_by' => 'type',
+                'query_builder' => function (EntityRepository $er) use ($options) {
+                    return $er->createQueryBuilder('s')
+                        ->where('t.langcode = :langcode')
+                        ->setParameter('langcode', $options['current_langcode'])
+                        ->leftJoin('s.translations', 't')
+                        ->orderBy('t.name', 'ASC');
+                },
             ])
             ->add('for_loan', CheckboxType::class, [
                 'required' => false,
